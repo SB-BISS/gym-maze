@@ -69,11 +69,7 @@ class MazeEnv(gym.Env):
     def _step(self, action):
         #print action
         #if isinstance(action, (int, long, float, complex)):
-        print "IN ENV, BEFORE ACTION"
-        print self.maze_view.robot
         self.maze_view.move_robot(self.ACTION[action])
-        print "IN ENV, AFTER ACTION"
-        print self.maze_view.robot
         #else:
          #   self.maze_view.move_robot(action)
 
