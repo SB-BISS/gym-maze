@@ -67,23 +67,29 @@ class MazeEnv(gym.Env):
         return [seed]
 
     def _step(self, action):
-        if isinstance(action, int):
-            self.maze_view.move_robot(self.ACTION[action])
-        else:
-            self.maze_view.move_robot(action)
+        #print action
+        #if isinstance(action, (int, long, float, complex)):
+        print "IN ENV, BEFORE ACTION"
+        print self.maze_view.robot
+        self.maze_view.move_robot(self.ACTION[action])
+        print "IN ENV, AFTER ACTION"
+        print self.maze_view.robot
+        #else:
+         #   self.maze_view.move_robot(action)
 
         if np.array_equal(self.maze_view.robot, self.maze_view.goal):
-            reward = 1
+            reward = 0
             done = True
         else:
-            reward = -0.1/(self.maze_size[0]*self.maze_size[1])
+            reward = -1 #*((self.maze_view.goal[0] -self.maze_view.robot[0]) +(self.maze_view.goal[1] -self.maze_view.robot[1]))  #-0.1/(self.maze_size[0]*self.maze_size[1])
             done = False
 
         self.state = self.maze_view.robot
 
+        current_state = np.copy(self.state) #otherwise it modifies the observation because it would be passed by reference
         info = {}
 
-        return self.state, reward, done, info
+        return current_state, reward, done, info
 
     def _reset(self):
         self.maze_view.reset_robot()
